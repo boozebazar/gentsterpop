@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Online Menu</title>
+  <!-- Google Fonts: Fira Sans Regular + UltraItalic -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;1,900&display=swap" rel="stylesheet"><link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="favicon.png"> <!-- voor iPhones -->
+
+  <style>
+    :root {
+      --accent: #f08ab7;
+      --text: #222;
+      --muted: #666;
+      --card: #ffffff;
+      --wrap-max: 720px;
+      --list-max: 560px;
+    }
+    * { box-sizing: border-box; }
+    html { font-size: clamp(14px, 1.6vw, 18px); }
+    body {
+  margin: 0;
+  color: var(--text);
+  font-family: 'Fira Sans', sans-serif;
+  line-height: 1.45;
+  min-height: 100vh;
+
+  /* Neon gradient achtergrond */
+  background:
+    radial-gradient(60vw 60vw at 85% -10%, color-mix(in srgb, var(--accent) 40%, transparent), transparent 60%),
+    radial-gradient(50vw 50vw at -10% 20%, color-mix(in srgb, #7af0df 45%, transparent), transparent 60%),
+    #fff;
+}
+
+    /* Sticky header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      border-bottom: 1px solid #eee;
+      padding: clamp(10px, 2.5vw, 16px);
+      text-align: center;
+    }
+    header img {
+      width: clamp(84px, 18vw, 120px);
+      height: auto;
+      display: block;
+      margin: 0 auto clamp(6px, 1.2vw, 8px);
+    }
+    header h1 {
+      margin: 0;
+      font-size: clamp(34px, 6.2vw, 55px);
+      font-weight: 900;
+      font-style: italic;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .wrap {
+      max-width: var(--wrap-max);
+      margin: clamp(16px, 3vw, 28px) auto;
+      padding: 0 clamp(12px, 3vw, 20px);
+      text-align: center;
+    }
+
+    /* Sectie-knoppen (Ultra Italic) */
+    .section-toggle {
+      display: block;
+      width: 100%;
+      max-width: var(--list-max);
+      margin: 0 auto clamp(10px, 2vw, 14px) auto;
+      user-select: none;
+      cursor: pointer;
+      background: var(--accent);
+      color: #fff;
+      padding: clamp(14px, 3vw, 20px);
+      border: none;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      font-weight: 900;
+      font-style: italic; /* Ultra italic look */
+      font-family: 'Fira Sans', sans-serif;
+      font-size: clamp(28px, 5.2vw, 45px);
+      box-shadow: 0 4px 10px rgba(0,0,0,.08);
+    }
+
+    /* Menukaart-inhoud */
+    .list, .item, .name, .price {
+      font-family: 'Fira Sans', sans-serif;
+      font-weight: 400;
+      font-style: normal;
+    }
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto clamp(16px, 3vw, 24px) auto;
+  display: none;
+
+  /* Glas-effect */
+  background: #ffffffcc;         /* semi-transparant wit */
+  backdrop-filter: blur(8px);    /* blur achter de kaart */
+  border-radius: 20px;
+  border: 1px solid #fff;
+  box-shadow: 0 10px 40px rgba(0,0,0,.08);
+
+  overflow: hidden;
+  max-width: var(--list-max);
+  text-align: left;
+}
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      padding: clamp(10px, 2.6vw, 14px) clamp(14px, 3vw, 18px);
+      border-bottom: 1px solid #f2f2f2;
+    }
+    .item:last-child { border-bottom: none; }
+
+    .name { font-size: clamp(15px, 2.2vw, 18px); line-height: 1.35; }
+    .price { font-size: clamp(13px, 2vw, 16px); color: var(--muted); white-space: nowrap; font-weight: 600; }
+
+    /* Footer visual – direct na content */
+    .footer-visual {
+      text-align: center;
+      padding: clamp(16px, 4vw, 24px);
+    }
+    .footer-visual img {
+      max-width: 240px;
+      width: 60%;
+      height: auto;
+    }
+
+/* Food: subtiele ingrediëntenregel onder de naam */
+.item .ingredients {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.95em;
+  color: var(--muted);
+  line-height: 1.35;
+  /* optioneel: iets lichter voor nog subtieler effect */
+  /* opacity: .9; */
+}
+
+/* Tabs boven foodmenu */
+.tabs {
+  display: flex;
+  justify-content: center;   /* tabs gecentreerd */
+  margin: 16px 0 12px 0;     /* extra ruimte boven en onder */
+  gap: 8px;
+}
+
+.tab {
+  padding: 10px 18px;        /* iets ruimer */
+  background: #eee;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 1em;
+  font-family: 'Fira Sans', sans-serif;
+  transition: background 0.2s;
+  text-align: center;        /* tekst zelf gecentreerd */
+}
+.tab.active {
+  background: var(--accent);   /* zelfde roze als de knoppen */
+  color: #fff;
+  font-weight: 700;
+}
+
+/* Reset binnenliggende lijsten (tabs) zodat er geen extra inspringing is */
+.list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item.note .name {
+  color: var(--muted);
+  font-style: italic;
+}
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="logo-gentsterpop.svg" alt="Gentsterpop Logo">
+    <h1>Menu</h1>
+  </header>
+
+  <main class="wrap">
+    <button class="section-toggle" onclick="toggleMenu('drinks')">Drinks</button>
+<div id="drinks" class="list">
+  <div class="tabs">
+<div class="tab active" data-tab="bier" onclick="switchTab('drinks','bier')">Bier</div>
+<div class="tab" data-tab="wijn" onclick="switchTab('drinks','wijn')">Wijn</div>
+<div class="tab" data-tab="frisdrank" onclick="switchTab('drinks','frisdrank')">Frisdrank</div>
+  </div>
+
+  <ul id="tab-bier">
+      <li class="item"><span class="name">Bier</span><span class="price">1 BON</span></li>
+      <li class="item"><span class="name">Bierkan 5 PINTJES + 1 GRATIS (1,5 l)</span><span class="price">5 BONNEN</span></li>
+      <li class="item"><span class="name">Carlsberg 0%</span><span class="price">1 BON</span></li>
+      <li class="item"><span class="name">Wittekerke Rosé</span><span class="price">1 BON</span></li>
+</ul>
+  <ul id="tab-wijn">
+      <li class="item"><span class="name">Witte wijn</span><span class="price">2 BONNEN</span></li>
+      <li class="item"><span class="name">Rode wijn</span><span class="price">2 BONNEN</span></li>
+      <li class="item"><span class="name">Rosé wijn</span><span class="price">2 BONNEN</span></li>
+      <li class="item"><span class="name">Cava</span><span class="price">2 BONNEN</span></li>
+      <li class="item"><span class="name">Cava 0%</span><span class="price">2 BONNEN</span></li>
+</ul>
+  <ul id="tab-frisdrank">
+      <li class="item"><span class="name">Cola</span><span class="price">1 BON</span></li>
+      <li class="item"><span class="name">Cola Zero</span><span class="price">1 BON</span></li>
+      <li class="item"><span class="name">Limonade</span><span class="price">1 BON</span></li>
+      <li class="item"><span class="name">Plat water</span><span class="price">1 BON</span></li>
+      <li class="item"><span class="name">Spuitwater</span><span class="price">1 BON</span></li>
+      <li class="item"><span class="name">Sinaasappelsap</span><span class="price">1 BON</span></li>
+    </ul>
+</div>
+
+   <button class="section-toggle" onclick="toggleMenu('food')">Food</button>
+<div id="food" class="list">
+  <div class="tabs">
+<div class="tab active" data-tab="pizza" onclick="switchTab('food','pizza')">Pizza</div>
+<div class="tab" data-tab="pasta" onclick="switchTab('food','pasta')">Pasta</div>
+<div class="tab" data-tab="frietjes" onclick="switchTab('food','frietjes')">Frietjes</div>
+  </div>
+
+  <!-- Pizza sectie -->
+  <ul id="tab-pizza">
+    <li class="item">
+      <span class="name">
+        Vegan
+        <span class="ingredients">tomaat, gegrilde artisjok, gegrilde courgette, champignons, taggiasche olijven, gele en rode paprika, oregano, olijfolie</span>
+      </span>
+      <span class="price">1 EETBON</span>
+    </li>
+    <li class="item">
+      <span class="name">
+        Cheesy
+        <span class="ingredients">tomaat, fior di latte, provolone, parmigiano, scamorza, olijfolie</span>
+      </span>
+      <span class="price">1 EETBON</span>
+    </li>
+    <li class="item">
+      <span class="name">
+        Veggie
+        <span class="ingredients">tomaat, fior di latte, gegrilde aubergine, kerstomaatjes, gele en rode paprika, taggiache olijven, oregano, olijfolie</span>
+      </span>
+      <span class="price">1 EETBON</span>
+    </li>
+    <li class="item">
+      <span class="name">
+        Margherita
+        <span class="ingredients">tomaat, fior di latte, basilicum, olijfolie</span>
+      </span>
+      <span class="price">1 EETBON</span>
+    </li>
+  </ul>
+
+ <!-- Pasta sectie -->
+<ul id="tab-pasta" style="display:none;">
+  <li class="item">
+    <span class="name">
+      4 Kazen
+      <span class="ingredients">
+        Pittige kaassaus met room, kruiden, Emmenthal, Gouda, Cheddar en Mozarella
+      </span>
+    </span>
+    <span class="price">1 EETBON</span>
+  </li>
+
+  <li class="item">
+    <span class="name">
+      Veggie
+      <span class="ingredients">
+        Vegetarische pasta met een heerlijk getomateerde saus, ui, courgette, wortel, champignons, paprika, olijfolie en kruiden
+      </span>
+    </span>
+    <span class="price">1 EETBON</span>
+  </li>
+
+  <li class="item">
+    <span class="name">
+      Thai Red Curry
+      <span class="ingredients">
+        Pikante rode curry op basis van kokosmelk met juliennegroentjes en kruiden
+      </span>
+    </span>
+    <span class="price">1 EETBON</span>
+  </li>
+</ul>
+
+<!-- Frietjes sectie -->
+<ul id="tab-frietjes" style="display:none;">
+  <li class="item">
+    <span class="name">
+      American loaded fries
+      <span class="ingredients">
+        Knapperige frietjes met smoked pulled mushrooms, kaassaus en koolsla afgewerkt met lente-ui
+      </span>
+    </span>
+    <span class="price">1 EETBON</span>
+  </li>
+
+  <li class="item">
+    <span class="name">
+      Greek vegan loaded fries
+      <span class="ingredients">
+        Knapperige frietjes met vegan gyros, Griekse tomatensalsa en tzatziki
+      </span>
+    </span>
+    <span class="price">1 EETBON</span>
+  </li>
+
+  <li class="item">
+    <span class="name">
+      Frietjes met saus naar keuze
+      <span class="ingredients">
+        Om de laatste honger te stillen
+      </span>
+    </span>
+    <span class="price">1 EETBON of FRIETBON</span>
+  </li>
+</ul>
+
+<li class="item note">
+  <span class="name">Extra frietbonnen kan je kopen aan de bonnetjesstand (€5/st.)</span>
+</li>
+
+</ul>
+
+</div>
+
+    <div class="footer-visual">
+      <img src="bonnen-visual.svg" alt="Bonnen Visual">
+    </div>
+  </main>
+
+  <script>
+    function toggleMenu(id) {
+      const el = document.getElementById(id);
+      el.style.display = el.style.display === 'block' ? 'none' : 'block';
+    }
+
+function switchTab(groupId, tabName) {
+  const groupEl = document.getElementById(groupId);
+  if (!groupEl) return;
+
+  // verberg alle UL's binnen deze groep
+  groupEl.querySelectorAll('ul[id^="tab-"]').forEach(u => u.style.display = 'none');
+
+  // verwijder active op alle tabs binnen deze groep
+  groupEl.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+
+  // toon gevraagde tab + zet active op juiste tab-knop
+  const list = groupEl.querySelector('#tab-' + tabName);
+  if (list) list.style.display = 'block';
+
+  const activeTabBtn = Array.from(groupEl.querySelectorAll('.tabs .tab'))
+    .find(t => t.dataset.tab === tabName);
+  if (activeTabBtn) activeTabBtn.classList.add('active');
+}
+
+// init: zet starttab per groep
+document.addEventListener('DOMContentLoaded', () => {
+  switchTab('drinks', 'bier');
+  switchTab('food', 'pizza');
+});
+
+  </script>
+</body>
+</html>

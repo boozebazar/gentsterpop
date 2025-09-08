@@ -192,16 +192,20 @@
   opacity: 0.6;
 }
 
-/* Badge naast de prijs */
-.item.soldout .price::after {
-  content: " UITVERKOCHT";
+/* Label onder de naam */
+.item.soldout .name::after {
+  content: "UITVERKOCHT";
+  display: block;
+  margin-top: 6px;
   background: crimson;
   color: #fff;
   font-size: 0.75em;
   font-weight: 700;
   padding: 4px 8px;
-  border-radius: 8px;
-  margin-left: 8px;
+  border-radius: 6px;
+  width: fit-content;
+}
+
 }
   </style>
 </head>
@@ -396,6 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </script>
 </body>
 </html>
+
 
 
 

@@ -186,26 +186,23 @@
   font-style: italic;
 }
 
-/* Soldout stijl */
+/* Uitverkocht */
 .item.soldout .name {
   text-decoration: line-through;
   opacity: 0.6;
 }
 
-/* Badge */
-.item.soldout::after {
-  content: "UITVERKOCHT";
+/* Badge naast de prijs */
+.item.soldout .price::after {
+  content: " UITVERKOCHT";
   background: crimson;
   color: #fff;
   font-size: 0.75em;
   font-weight: 700;
   padding: 4px 8px;
   border-radius: 8px;
-  margin-left: 10px;
-  align-self: center;
+  margin-left: 8px;
 }
-
-
   </style>
 </head>
 <body>
@@ -258,7 +255,7 @@
   <ul id="tab-pizza">
     <li class="item soldout">
       <span class="name">
-        Vegan
+        Test
         <span class="ingredients">tomaat, gegrilde artisjok, gegrilde courgette, champignons, taggiasche olijven, gele en rode paprika, oregano, olijfolie</span>
       </span>
       <span class="price">1 EETBON</span>
@@ -399,6 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </script>
 </body>
 </html>
+
 
 
 

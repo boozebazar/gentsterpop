@@ -186,6 +186,26 @@
   font-style: italic;
 }
 
+/* Soldout stijl */
+.item.soldout .name {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Badge */
+.item.soldout::after {
+  content: "UITVERKOCHT";
+  background: crimson;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 8px;
+  margin-left: 10px;
+  align-self: center;
+}
+
+
   </style>
 </head>
 <body>
@@ -205,7 +225,7 @@
   </div>
 
   <ul id="tab-bier">
-      <li class="item"><span class="name">Bier</span><span class="price">1 BON</span></li>
+      <li class="item soldout"><span class="name">Bier</span><span class="price">1 BON</span></li>
       <li class="item"><span class="name">Carlsberg 0%</span><span class="price">1 BON</span></li>
       <li class="item"><span class="name">Wittekerke Rosé</span><span class="price">1 BON</span></li>
 </ul>
@@ -379,4 +399,5 @@ document.addEventListener('DOMContentLoaded', () => {
   </script>
 </body>
 </html>
+
 

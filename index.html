@@ -207,7 +207,16 @@
   text-decoration: none; 
 }
 
+    /* Allergenen */
+details.allergens { margin-top: 6px; }
+details.allergens summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: .95em;
 }
+details.allergens[open] summary { margin-bottom: 2px; }
+details.allergens ul { margin: 4px 0 0 18px; padding: 0; color: var(--muted); }
+
   </style>
 </head>
 <body>
@@ -262,6 +271,9 @@
       <span class="name">
         Vegan
         <span class="ingredients">tomaat, gegrilde artisjok, gegrilde courgette, champignons, taggiasche olijven, gele en rode paprika, oregano, olijfolie</span>
+        <details class="allergens"><summary>Allergenen</summary>
+  <ul><li>Tarwe</li><li>Soja</li></ul>
+</details>
       </span>
       <span class="price">1 EETBON</span>
     </li>
@@ -269,21 +281,30 @@
       <span class="name">
         Cheesy
         <span class="ingredients">tomaat, fior di latte, provolone, parmigiano, scamorza, olijfolie</span>
-      </span>
+      <details class="allergens"><summary>Allergenen</summary>
+  <ul><li>Tarwe</li><li>Melk</li><li>Soja</li></ul>
+</details>
+</span>
       <span class="price">1 EETBON</span>
     </li>
     <li class="item">
       <span class="name">
         Veggie
         <span class="ingredients">tomaat, fior di latte, gegrilde aubergine, kerstomaatjes, gele en rode paprika, taggiache olijven, oregano, olijfolie</span>
-      </span>
+      <details class="allergens"><summary>Allergenen</summary>
+  <ul><li>Tarwe</li><li>Melk</li><li>Soja</li></ul>
+</details>
+</span>
       <span class="price">1 EETBON</span>
     </li>
     <li class="item">
       <span class="name">
         Margherita
         <span class="ingredients">tomaat, fior di latte, basilicum, olijfolie</span>
-      </span>
+      <details class="allergens"><summary>Allergenen</summary>
+  <ul><li>Tarwe</li><li>Melk</li><li>Soja</li></ul>
+</details>
+</span>
       <span class="price">1 EETBON</span>
     </li>
   </ul>
@@ -296,7 +317,10 @@
       <span class="ingredients">
         Pittige kaassaus met room, kruiden, Emmenthal, Gouda, Cheddar en Mozarella
       </span>
-    </span>
+    <details class="allergens"><summary>Allergenen</summary>
+  <ul><li>Tarwe</li><li>Melk</li></ul>
+</details>
+</span>
     <span class="price">1 EETBON</span>
   </li>
 
@@ -306,7 +330,10 @@
       <span class="ingredients">
         Vegetarische pasta met een heerlijk getomateerde saus, ui, courgette, wortel, champignons, paprika, olijfolie en kruiden
       </span>
-    </span>
+    <details class="allergens"><summary>Allergenen</summary>
+  <ul><li>Mosterd</li></ul>
+</details>
+</span>
     <span class="price">1 EETBON</span>
   </li>
 
@@ -316,7 +343,10 @@
       <span class="ingredients">
         Pikante rode curry op basis van kokosmelk met juliennegroentjes en kruiden
       </span>
-    </span>
+    <details class="allergens"><summary>Allergenen</summary>
+  <ul><li>Selderij</li><li>Schaaldieren (extract)</li><li>Vis</li><li>Sulfiet</li></ul>
+</details>
+</span>
     <span class="price">1 EETBON</span>
   </li>
 </ul>
@@ -401,6 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </script>
 </body>
 </html>
+
 
 
 

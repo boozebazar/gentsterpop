@@ -1,24 +1,445 @@
+
 <!doctype html>
 <html lang="nl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Gentsterpop • Crew planning</title>
-  <link rel="icon" href="../assets/favicon.png">
-  <link rel="icon" type="image/png" href="../assets/favicon.png">
-  <link rel="shortcut icon" href="../assets/favicon.ico">
-  <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;padding:24px}
-    .wrap{max-width:900px;margin:0 auto}
-    .logo{height:56px}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gentsterpop Crew Shifts</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;1,900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --c-navy:#14255d;
+  --c-cyan:#00b7e6;
+  --c-red:#e4032c;
+  --c-yellow:#ffef15;
+  --c-lilac:#8d80bb;
+}
+*{box-sizing:border-box}
+body{
+  font-family:'Fira Sans',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  margin:0; padding:24px;
+  color:var(--c-navy);
+  background:#fff;
+}
+.container{max-width:920px;margin:0 auto}
+.header{
+  display:flex;
+  flex-direction:column;     /* logo boven, titel eronder */
+  align-items:center;        /* horizontaal centreren */
+  gap:8px;
+  margin-bottom:12px;
+  text-align:center;
+}
+.logo{
+  display:block;
+  width:clamp(96px,18vw,140px);
+  height:auto;
+  margin:0 auto;
+}
+h1{ margin:6px 0 0; }        /* kleine ruimte onder logo */
+h1{
+  margin:0;
+  text-transform:uppercase;
+  font-weight:900;           /* Ultra */
+  font-style:italic;         /* Italic */
+  letter-spacing:1px;
+  font-size:clamp(34px,6.2vw,55px);
+}
+.subtitle{color:var(--c-lilac);margin-bottom:16px}
+.notice{margin:12px 0 24px 0;font-weight:700}
+.search{position:relative;margin:16px 0 24px 0}
+input[type="text"]{
+  width:100%;padding:16px 16px;border:2px solid var(--c-navy);
+  border-radius:12px;font-size:18px;outline:none;
+}
+input[type="text"]:focus{border-color:var(--c-cyan);}
+.kbd{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;border:1px solid #ddd;border-bottom-width:3px;border-right-width:3px;border-radius:6px;padding:2px 6px;background:#f8f8f8;margin-left:6px}
+.suggestions{position:absolute;left:0;right:0;top:100%;background:#fff;border:1px solid #e5e5e5;border-radius:12px;margin-top:6px;box-shadow:0 10px 30px rgba(0,0,0,.08);overflow:hidden;z-index:10}
+.suggestions.hidden{display:none}
+.suggestion{padding:12px 14px;cursor:pointer;border-top:1px solid #f3f3f3}
+.suggestion:first-child{border-top:none}
+.suggestion.active, .suggestion:hover{background:var(--c-cyan);color:#003049}
+
+.card{border:1px solid #e9eef5;border-radius:16px;padding:16px 16px;margin:16px 0;background:#fcfdff}
+.card h3{margin:0 0 8px 0}
+.date-badge{
+  display:inline-block;background:var(--c-navy);color:#fff;border-radius:999px;
+  padding:6px 10px;font-size:12px;font-weight:600;letter-spacing:.2px;margin-bottom:10px
+}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:6px}
+.item label{display:block;font-size:12px;color:#4b587a;margin-bottom:2px}
+.item div{font-weight:600;font-size:16px}
+.pills{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.pill-red{background:var(--c-red);color:#fff}
+.pill-yellow{background:var(--c-yellow);color:#000}
+.pill small{font-weight:600;opacity:.95}
+.role{display:inline-block;background:var(--c-cyan);color:#002233;border-radius:8px;padding:2px 8px;font-weight:700;font-size:12px;margin-left:6px}
+/* --- menu-like layout tweaks --- */
+.container { max-width: 800px; }
+h1 { font-size: 2rem; letter-spacing: .2px; }
+.subtitle { margin-bottom: 12px; opacity: .9; }
+
+.search { margin: 8px 0 12px 0; }
+input[type="text"] { border-radius: 10px; font-size: 17px; }
+
+.card {
+  border: 0;
+  border-top: 2px solid var(--c-cyan);
+  border-radius: 0;
+  padding: 14px 0;
+  background: transparent;
+}
+.card + .card { margin-top: 4px; }
+
+.date-badge {
+  background: var(--c-yellow);
+  color: #000;
+  font-weight: 800;
+  letter-spacing: .3px;
+}
+
+h3 { font-size: 1.25rem; margin: 6px 0 2px; }
+
+.grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px 14px;
+  margin-top: 8px;
+}
+
+.item label { font-size: 11px; text-transform: uppercase; letter-spacing: .3px; }
+.item div { font-size: 15px; }
+
+.pills { margin-top: 8px; gap: 6px; }
+.pill { padding: 4px 10px; font-weight: 800; }
+.pill-red { background: var(--c-red); color: #fff; }
+.pill-yellow { background: var(--c-yellow); color: #000; }
+
+.notice{
+  margin:18px 0 24px;
+  padding:16px 22px;
+  border:0;
+  border-radius:9999px;             /* pill */
+  background:linear-gradient(135deg, var(--c-cyan) 0%, #62c7ea 40%, var(--c-lilac) 100%);
+  color:#fff;
+  font-weight:800;
+  line-height:1.3;
+  text-align:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 8px 24px rgba(0,0,0,.12);
+}
+
+/* responsive baseline zoals menu-pagina */
+html{ font-size:clamp(14px,1.6vw,18px); }                   /* schaal typografie */
+.container{
+  max-width:720px;                                          /* zelfde wrap */
+  margin:clamp(16px,3vw,28px) auto;
+  padding:0 clamp(12px,3vw,20px);
+  text-align:left;
+}
+/* logo en header compacter */
+.logo{ width:clamp(84px,18vw,120px); height:auto; }
+
+/* zoekveld en suggesties beter tappable */
+.search{ margin:8px 0 12px 0; }
+input#q{ font-size:clamp(16px,3.8vw,18px); border-radius:10px; }
+.suggestion{ padding:14px 16px; }                           /* grotere touch target */
+
+/* kaarten naar “menu”-look, luchtiger */
+.card{
+  border:0; border-top:2px solid var(--c-cyan);
+  border-radius:0; padding:14px 0; background:transparent;
+}
+.card + .card{ margin-top:4px; }
+.date-badge{ background:var(--c-yellow); color:#000; font-weight:800; }
+
+.grid{
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:10px 14px; margin-top:8px;
+}
+.item label{ font-size:11px; text-transform:uppercase; letter-spacing:.3px; }
+.item div{ font-size:15px; }
+
+/* small screens: één kolom */
+@media (max-width:520px){
+  .grid{ grid-template-columns:1fr; }
+}
+
+/* notice onder resultaten met duidelijke stijl */
+.notice{
+  margin:18px 0 24px 0; padding:10px 12px;
+  border-left:3px solid var(--c-red);
+  background:#fff; font-weight:700;
+}
+.notes{ margin-top:8px; }
+.note{ font-size:14px; }
+.note-time{ font-weight:700; margin-right:6px; }
+/* Notities opvallend */
+.notes{
+  margin-top:12px;
+  padding:12px 14px;
+  border-left:4px solid var(--c-red);
+  background:#fff4f4;
+  border-radius:8px;
+}
+.notes-title{
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.3px;
+  text-transform:uppercase;
+  color:var(--c-red);
+  margin-bottom:6px;
+}
+.note{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:15px;
+}
+.note::before{
+  content:"!";
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--c-red);color:#fff;font-weight:900;font-size:12px;
+}
+.note-time{
+  background:var(--c-yellow);color:#000;
+  border-radius:6px;padding:2px 6px;font-weight:800;margin-right:4px;
+}
+/* Gradient pill-variant voor notice */
+.notice--pill{
+  margin:18px 0 24px;
+  padding:16px 22px;
+  border:0;
+  border-radius:9999px;
+  background:linear-gradient(135deg, var(--c-cyan) 0%, #62c7ea 40%, var(--c-lilac) 100%);
+  color:#fff;
+  font-weight:800;
+  line-height:1.3;
+  text-align:center;   /* centreren via tekstuitlijning */
+  display:block;       /* geen flex */
+  box-shadow:0 8px 24px rgba(0,0,0,.12);
+}
+.notice--pill a{ color:#fff; text-decoration:underline; font-weight:900; }
+.notice-phone{ white-space:nowrap; }  /* nummer blijft bij elkaar */
+/* center subtitle tekst */
+.subtitle{
+  text-align:center;
+}
+.result-name{
+  font-weight:900;
+  font-size:clamp(24px,4.5vw,36px);
+  text-align:center;
+  margin:8px 0 4px;
+}
+.title-row{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:6px;
+  margin-bottom:8px;
+}
+
+:root{ --badge-h:32px; }
+
+.date-badge,
+.role-badge{
+  display:inline-flex;
+  align-items:center;
+  height:var(--badge-h);
+  padding:0 12px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:14px;
+  line-height:1;
+  white-space:nowrap;
+}
+
+.date-badge{
+  background:var(--c-yellow);
+  color:#000;
+  letter-spacing:.2px;
+}
+
+.role-badge{
+  background:var(--c-cyan);
+  color:#002233;
+  letter-spacing:.3px;
+  text-transform:uppercase;
+  box-shadow:0 4px 14px rgba(0,0,0,.08);
+}
+
+/* header rij – links en onder elkaar */
+.title-row{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:6px;
+  margin-bottom:8px;
+}
+
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <img class="logo" src="../assets/logo-gentsterpop.svg" alt="Gentsterpop">
-    <h1>Crew planning</h1>
-    <p>Placeholder — hier komt je echte crew-planning HTML.</p>
+<div class="container">
+ <div class="header">
+  <img class="logo" src="logo-gentsterpop.svg" alt="Gentsterpop logo">
+  <h1>CREW PLANNING</h1>
+</div>
+  <div class="subtitle">Typ je naam. Druk <span class="kbd">Enter</span> om te zoeken.</div>
+  <div class="search">
+    <input id="q" type="text" placeholder="Zoek op naam..."/>
+    <div id="sugg" class="suggestions hidden"></div>
   </div>
+  <div id="results"></div>
+<div class="notice notice--pill">
+  Heb je nog vragen of is er nog iets onduidelijk?<br>Bel David op het nr.
+  <a class="notice-phone" href="tel:+32498441066">+32 498 44 10 66</a>
+</div>
+<script>
+const DATA = {"Maarten": [{"date": "15-09-2025", "weekday": "maandag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "13:30:00"}, {"date": "16-09-2025", "weekday": "dinsdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "17:00:00"}, {"date": "17-09-2025", "weekday": "woensdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "19:00:00"}, {"date": "18-09-2025", "weekday": "donderdag", "start": "10:00:00", "start_role": "Productie", "break": "nan", "switch_time": null, "switch_to": null, "stop": "00:00:00"}, {"date": "19-09-2025", "weekday": "vrijdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "17:00:00"}], "David": [{"date": "15-09-2025", "weekday": "maandag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "13:30:00"}, {"date": "16-09-2025", "weekday": "dinsdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "17:00:00"}, {"date": "17-09-2025", "weekday": "woensdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "19:00:00"}, {"date": "18-09-2025", "weekday": "donderdag", "start": "10:00:00", "start_role": "Productie", "break": "nan", "switch_time": null, "switch_to": null, "stop": "00:00:00"}, {"date": "19-09-2025", "weekday": "vrijdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "17:00:00"}], "Ilanja": [{"date": "15-09-2025", "weekday": "maandag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "13:30:00"}, {"date": "16-09-2025", "weekday": "dinsdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "17:00:00"}, {"date": "17-09-2025", "weekday": "woensdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "19:00:00"}, {"date": "18-09-2025", "weekday": "donderdag", "start": "10:00:00", "start_role": "Productie", "break": "nan", "switch_time": null, "switch_to": null, "stop": "00:00:00"}, {"date": "19-09-2025", "weekday": "vrijdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "17:00:00"}], "Timo": [{"date": "16-09-2025", "weekday": "dinsdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "17:00:00"}, {"date": "17-09-2025", "weekday": "woensdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "19:00:00"}, {"date": "18-09-2025", "weekday": "donderdag", "start": "10:00:00", "start_role": "Productie", "break": "nan", "switch_time": null, "switch_to": null, "stop": "00:00:00"}, {"date": "19-09-2025", "weekday": "vrijdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "17:00:00"}], "Kenny": [{"date": "16-09-2025", "weekday": "dinsdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "17:00:00"}, {"date": "17-09-2025", "weekday": "woensdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "19:00:00"}, {"date": "18-09-2025", "weekday": "donderdag", "start": "13:00:00", "start_role": "Grote bar", "break": "21:00:00", "switch_time": null, "switch_to": null, "stop": "00:00:00"}, {"date": "19-09-2025", "weekday": "vrijdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "17:00:00"}], "Sam": [{"date": "17-09-2025", "weekday": "woensdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "19:00:00"}], "Arno": [{"date": "17-09-2025", "weekday": "woensdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "19:00:00"}, {"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Kleine bar", "break": "18:30:00", "switch_time": null, "switch_to": null, "stop": "00:00:00", "pill_entries": [{"type": "Afwas", "hours": "21:00 - 22:00"}, {"type": "Débarras", "hours": "20:00 - 21:00"}]}], "Arian": [{"date": "17-09-2025", "weekday": "woensdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "19:00:00"}, {"date": "18-09-2025", "weekday": "donderdag", "start": "13:00:00", "start_role": "Bon 1", "break": "nan", "switch_time": null, "switch_to": null, "stop": "00:00:00"}], "Fenne": [{"date": "17-09-2025", "weekday": "woensdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "19:00:00"}, {"date": "18-09-2025", "weekday": "donderdag", "start": "13:00:00", "start_role": "Onthaal", "break": "20:30:00", "switch_time": "21:00:00", "switch_to": "Kleine bar", "stop": "00:00:00"}], "Mounsef": [{"date": "17-09-2025", "weekday": "woensdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "19:00:00"}, {"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Onthaal", "break": "20:30:00", "switch_time": "21:00:00", "switch_to": "Kleine bar", "stop": "00:00:00"}], "Lisa": [{"date": "17-09-2025", "weekday": "woensdag", "start": "16:00:00", "start_role": null, "break": "nan", "stop": "19:00:00"}, {"date": "18-09-2025", "weekday": "donderdag", "start": "13:00:00", "start_role": "Kleine bar", "break": "20:30:00", "switch_time": null, "switch_to": null, "stop": "00:00:00"}], "Liesbeth": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Onthaal", "break": "18:00:00", "switch_time": "18:30:00", "switch_to": "Grote bar", "stop": "00:00:00", "pill_entries": [{"type": "Afwas", "hours": "22:00 - 23:00"}]}], "Amelie": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Onthaal", "break": "18:00:00", "switch_time": "18:30:00", "switch_to": "Grote bar", "stop": "00:00:00", "pill_entries": [{"type": "Afwas", "hours": "22:00 - 23:00"}]}], "Evelyn": [{"date": "18-09-2025", "weekday": "donderdag", "start": "16:00:00", "start_role": "Onthaal", "break": "18:00:00", "switch_time": "18:30:00", "switch_to": "Grote bar", "stop": "00:00:00"}], "Jasper": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Onthaal", "break": "18:00:00", "switch_time": "18:30:00", "switch_to": "Grote bar", "stop": "00:00:00"}], "Annette": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Onthaal", "break": "18:00:00", "switch_time": "18:30:00", "switch_to": "Grote bar", "stop": "00:00:00"}], "Denis": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Onthaal", "break": "18:00:00", "switch_time": "18:30:00", "switch_to": "Grote bar", "stop": "00:00:00"}], "Iason": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Onthaal", "break": "20:00:00", "switch_time": "20:30:00", "switch_to": "Kleine bar", "stop": "00:00:00"}], "Febe": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Onthaal", "break": "20:00:00", "switch_time": "20:30:00", "switch_to": "Kleine bar", "stop": "23:00:00"}], "Caroline": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Onthaal", "break": "18:00:00", "switch_time": "18:30:00", "switch_to": "Kleine bar", "stop": "nan"}], "Britt": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Onthaal", "break": "18:00:00", "switch_time": "18:30:00", "switch_to": "Kleine bar", "stop": "nan"}], "Secu 1": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "In/uitgang", "break": "nan", "switch_time": null, "switch_to": null, "stop": "19:00:00"}], "Steward 1": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "In/uitgang", "break": "nan", "switch_time": null, "switch_to": null, "stop": "19:00:00"}], "Secu 2": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "In/uitgang", "break": "19:00:00", "switch_time": "19:30:00", "switch_to": "Onthaal", "stop": "23:00:00"}], "Steward 2": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "In/uitgang", "break": "19:00:00", "switch_time": "19:30:00", "switch_to": "Onthaal", "stop": "23:00:00"}], "Jannes": [{"date": "18-09-2025", "weekday": "donderdag", "start": "13:00:00", "start_role": "Grote bar", "break": "20:30:00", "switch_time": null, "switch_to": null, "stop": "00:00:00"}], "Fee": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Grote bar", "break": "20:30:00", "switch_time": null, "switch_to": null, "stop": "00:00", "pill_entries": [{"type": "Débarras", "hours": "18:30 - 19:30"}]}], "Sarah": [{"date": "18-09-2025", "weekday": "donderdag", "start": "16:00:00", "start_role": "Grote bar", "break": "20:30:00", "switch_time": null, "switch_to": null, "stop": "00:00:00", "pill_entries": [{"type": "Afwas", "hours": "18:00 - 18:30"}, {"type": "Débarras", "hours": "17:30 - 18:00 en 18:30 - 19:00"}]}], "Barbara": [{"date": "18-09-2025", "weekday": "donderdag", "start": "16:00:00", "start_role": "Grote bar", "break": "20:30:00", "switch_time": null, "switch_to": null, "stop": "00:00:00", "pill_entries": [{"type": "Afwas", "hours": "18:00 - 18:30"}, {"type": "Débarras", "hours": "17:30 - 18:00 en 18:30 - 19:00"}]}], "Brenda": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Grote bar", "break": "21:00:00", "switch_time": null, "switch_to": null, "stop": "00:00:00", "pill_entries": [{"type": "Afwas", "hours": "20:00 - 21:00"}, {"type": "Débarras", "hours": "19:00 - 20:00"}]}], "Maartje": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Grote bar", "break": "21:00:00", "switch_time": null, "switch_to": null, "stop": "00:00:00", "pill_entries": [{"type": "Afwas", "hours": "20:00 - 21:00"}, {"type": "Débarras", "hours": "19:00 - 20:00"}]}], "Louisa": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Grote bar", "break": "19:30:00", "switch_time": null, "switch_to": null, "stop": "00:00:00", "pill_entries": [{"type": "Afwas", "hours": "18:30 - 19:30"}, {"type": "Débarras", "hours": "21:30 - 22:30"}]}], "Ellen DB": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Grote bar", "break": "19:30:00", "switch_time": null, "switch_to": null, "stop": "00:00:00", "pill_entries": [{"type": "Afwas", "hours": "18:30 - 19:30"}, {"type": "Débarras", "hours": "21:30 - 22:30"}]}], "Sanne": [{"date": "18-09-2025", "weekday": "donderdag", "start": "17:00:00", "start_role": "Grote bar", "break": "20:00:00", "switch_time": null, "switch_to": null, "stop": "00:00:00", "pill_entries": [{"type": "Afwas", "hours": "21:30 - 22:30"}, {"type": "Débarras", "hours": "20:30 - 21:30"}]}], "Zahra": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Grote bar", "break": "20:00:00", "switch_time": null, "switch_to": null, "stop": "00:00:00", "pill_entries": [{"type": "Afwas", "hours": "21:30 - 22:30"}, {"type": "Débarras", "hours": "20:30 - 21:30"}]}], "Filip": [{"date": "18-09-2025", "weekday": "donderdag", "start": "18:00:00", "start_role": "Kleine bar", "break": "nan", "switch_time": null, "switch_to": null, "stop": "00:00:00"}], "Cass": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Kleine bar", "break": "19:30:00", "switch_time": null, "switch_to": null, "stop": "00:00:00", "pill_entries": [{"type": "Afwas", "hours": "18:00 - 19:00"}, {"type": "Débarras", "hours": "17:30 - 18:00 en 19:00 - 19:30"}]}], "Gaetan": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Kleine bar", "break": "19:30:00", "switch_time": null, "switch_to": null, "stop": "00:00:00", "pill_entries": [{"type": "Afwas", "hours": "18:00 - 19:00"}, {"type": "Débarras", "hours": "17:30 - 18:00 en 19:00 - 19:30"}]}], "Ellen DW": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Kleine bar", "break": "20:30:00", "switch_time": null, "switch_to": null, "stop": "00:00:00"}], "Peter": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Kleine bar", "break": "20:00:00", "switch_time": null, "switch_to": null, "stop": "00:00:00", "pill_entries": [{"type": "Afwas", "hours": "19:00 - 20:00"}, {"type": "Débarras", "hours": "22:30 - 23:00"}]}], "Tina": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Kleine bar", "break": "20:00:00", "switch_time": null, "switch_to": null, "stop": "00:00:00", "pill_entries": [{"type": "Afwas", "hours": "19:00 - 20:00"}, {"type": "Débarras", "hours": "22:30 - 23:00"}]}], "Lien": [{"date": "18-09-2025", "weekday": "donderdag", "start": "16:00:00", "start_role": "Kleine bar", "break": "21:00:00", "switch_time": null, "switch_to": null, "stop": "00:00:00"}], "Leonie": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Kleine bar", "break": "18:30:00", "switch_time": null, "switch_to": null, "stop": "00:00:00", "pill_entries": [{"type": "Afwas", "hours": "21:00 - 22:00"}, {"type": "Débarras", "hours": "20:00 - 21:00"}]}], "Maxim": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Bon 1", "break": "nan", "switch_time": null, "switch_to": null, "stop": "00:00:00"}], "Helena": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Bon 2", "break": "nan", "switch_time": null, "switch_to": null, "stop": "00:00:00"}, {"date": "19-09-2025", "weekday": "vrijdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "17:00:00"}], "Celine": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Bon 2", "break": "nan", "switch_time": null, "switch_to": null, "stop": "00:00:00"}], "Marie": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Vestiaire", "break": "nan", "switch_time": null, "switch_to": null, "stop": "23:00:00"}], "Tara": [{"date": "18-09-2025", "weekday": "donderdag", "start": "15:00:00", "start_role": "Vestiaire", "break": "nan", "switch_time": null, "switch_to": null, "stop": "23:00:00"}], "Aaron": [{"date": "19-09-2025", "weekday": "vrijdag", "start": "08:00:00", "start_role": null, "break": "12:00:00", "stop": "17:00:00"}]};
+// Notities toevoegen zonder parser, rechtstreeks in DATA:
+(function addNotes(){
+  const NOTE_TIME = "19:00";
+  const NOTE_TEXT = "Onthaal downsizen naar 1 balie";
+  const DATE = "18-09-2025";
+  const DAY  = "donderdag";
+
+  function add(name){
+    const arr = DATA[name]; if(!arr) return;
+    const s = arr.find(x => (x.date===DATE) || (x.weekday===DAY));
+    if(!s) return;
+    s.notes = (s.notes||[]);
+    s.notes.push({ time: NOTE_TIME, text: NOTE_TEXT });
+  }
+
+  ["Fenne","Mounsef","Denis","Iason","Febe"].forEach(add);
+})();
+
+// simple fuzzy score: proportion of query letters matched in order + substring bonus
+function fuzzyScore(q, s){
+  q = q.toLowerCase(); s = s.toLowerCase();
+  if(!q) return 0;
+  if(s.includes(q)) return 1 + q.length/s.length;
+  let qi=0, si=0, matched=0;
+  while(qi<q.length && si<s.length){
+    if(q[qi]===s[si]){ matched++; qi++; si++; } else { si++; }
+  }
+  return matched/q.length;
+}
+const input = document.getElementById('q');
+const sugg = document.getElementById('sugg');
+let activeIndex = -1;
+
+function updateSuggestions(){
+  const q = input.value.trim();
+  const names = Object.keys(DATA);
+  const scored = names.map(n=>[n, fuzzyScore(q,n)])
+                      .filter(x=>x[1]>0)
+                      .sort((a,b)=>b[1]-a[1])
+                      .slice(0,8);
+  sugg.innerHTML = scored.map((x,i)=>`<div class="suggestion${i===activeIndex?' active':''}" data-name="${x[0]}">${x[0]}</div>`).join('');
+  sugg.classList.toggle('hidden', scored.length===0);
+}
+
+input.addEventListener('input', ()=>{ activeIndex = -1; updateSuggestions(); });
+
+sugg.addEventListener('click', (e)=>{
+  const el = e.target.closest('.suggestion');
+  if(!el) return;
+  input.value = el.dataset.name;
+  sugg.classList.add('hidden');
+  runSearch();
+});
+
+function escapeHtml(s){
+  return String(s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+}
+
+input.addEventListener('keydown', (e)=>{
+  const names = Object.keys(DATA);
+  const q = input.value.trim();
+  const scored = names.map(n=>[n, fuzzyScore(q,n)])
+                      .filter(x=>x[1]>0)
+                      .sort((a,b)=>b[1]-a[1]);
+  const items = [...sugg.querySelectorAll('.suggestion')];
+
+  if(e.key==='ArrowDown'){ e.preventDefault(); activeIndex = Math.min(items.length-1, activeIndex+1); renderActive(items); }
+  else if(e.key==='ArrowUp'){ e.preventDefault(); activeIndex = Math.max(0, activeIndex-1); renderActive(items); }
+  else if(e.key==='Enter'){
+    e.preventDefault();
+    input.value = (activeIndex>=0 && items[activeIndex]) ? items[activeIndex].dataset.name
+                  : (scored[0]?.[0] || q);
+    sugg.classList.add('hidden');
+    runSearch();
+  }
+});
+
+
+function renderActive(items){
+  items.forEach((el,i)=>el.classList.toggle('active', i===activeIndex));
+}
+
+function fmt(t){
+  if(!t||t==='nan') return '';
+  const m = String(t).match(/(\d{1,2}:\d{2})/); 
+  return m? m[1] : String(t);
+}
+function runSearch(){
+
+  const name = input.value.trim();
+  const box = document.getElementById('results');
+  box.innerHTML = '';
+  if(!DATA[name]){ return; }
+
+  // Naam één keer bovenaan
+  box.insertAdjacentHTML('beforeend', `<div class="result-name">${name}</div>`);
+
+  const shifts = DATA[name].slice().sort((a,b)=>String(a.date||'').localeCompare(String(b.date||'')));
+
+  shifts.forEach(s=>{
+    const pills = (s.pill_entries||[])
+      .map(p=>`<span class="pill ${p.type==='Afwas'?'pill-red':'pill-yellow'}"><span>${p.type}</span><small>${p.hours}</small></span>`)
+      .join('');
+
+    const roleBadge = s.start_role
+      ? `<span class="role-badge">${s.start_role}</span>`
+      : '';
+
+    const sw = s.switch_time
+      ? `<div class="item"><label>Wissel</label><div>${fmt(s.switch_time)} → ${s.switch_to||''}</div></div>`
+      : '';
+
+    const notesHtml = (s.notes||[]).map(n=>{
+      const t = fmt(n.time);
+      const txt = escapeHtml(n.text||'');
+      return `<div class="note">${t?`<span class="note-time">${t}</span>`:''}${txt}</div>`;
+    }).join('');
+
+    box.insertAdjacentHTML('beforeend', `
+      <div class="card">
+       <div class="title-row">
+  <span class="date-badge">${s.weekday||''} • ${s.date||''}</span>
+  ${roleBadge}
+</div>
+
+        <div class="grid">
+          ${s.start?`<div class="item"><label>Start</label><div>${fmt(s.start)}</div></div>`:''}
+          ${s.break?`<div class="item"><label>Pauze</label><div>${fmt(s.break)}</div></div>`:''}
+          ${sw}
+          ${s.stop?`<div class="item"><label>Stop</label><div>${fmt(s.stop)}</div></div>`:''}
+        </div>
+        <div class="pills">${pills}</div>
+        ${notesHtml?`<div class="notes"><div class="notes-title">Notitie</div>${notesHtml}</div>`:''}
+      </div>
+    `);
+  });
+}
+
+ 
+updateSuggestions();
+</script>
 </body>
 </html>
-

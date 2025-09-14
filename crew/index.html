@@ -470,7 +470,6 @@ function runSearch(){
   });
 }
 
-<script>
 // --- OVERZICHT PER STAND (EVENTDAG) ---
 const EVENT_DATE = "18-09-2025"; // pas aan indien nodig
 
@@ -555,10 +554,9 @@ document.querySelectorAll('.role-btn').forEach(btn=>{
   });
 });
 
-// (optioneel) standaard niets tonen; of activeer bv. Onthaal bij laden:
-// document.querySelector('.role-btn[data-role="Onthaal"]')?.click();
-</script>
- 
+// (optioneel) standaard niets tonen; of activeer bv. Onthaal bij laden: 
+// document.querySelector('.role-btn[data-role="Onthaal"]')?.click(); // optioneel auto-open
+
 updateSuggestions();
 </script>
 </body>

@@ -321,7 +321,8 @@ input#q{ font-size:clamp(16px,3.8vw,18px); border-radius:10px; }
   <details class="shift-overview" id="shiftOverview">
   <summary>Overzicht shifts</summary>
 
-  <div class="role-filters" s<!-- ROLE-FILTER KNOPPEN -->
+<!-- ROLE-FILTER KNOPPEN -->
+<div class="role-filters">
     <button class="role-btn" data-role="Onthaal">Onthaal</button>
     <button class="role-btn" data-role="Grote bar">Grote bar</button>
     <button class="role-btn" data-role="Kleine bar">Kleine bar</button>
@@ -558,6 +559,70 @@ const OTHER_DAYS = [
   { date: "17-09-2025", label: "woensdag"  },
   { date: "19-09-2025", label: "vrijdag"   },
 ];
+
+function collectDayPeople(dateStr){
+  const list = [];
+  for(const [name, shifts] of Object.entries(DATA)){
+    shifts.forEach(s=>{
+      if(s.date === dateStr){
+        list.push({
+          name,
+          role: s.start_role || "—",
+          start: fmt(s.start),
+          break: fmt(s.break),
+          switch_time: fmt(s.switch_time),
+          switch_to: s.switch_to || "",
+          stop: fmt(s.stop)
+        });
+      }
+    });
+  }
+  list.sort((a,b)=> (a.start||"99:99").localeCompare(b.start||"99:99") || a.name.localeCompare(b.name));
+  return list;
+}
+
+function renderDayBoard(day){
+  const wrap = document.getElementById('dayBoards');
+  const people = collectDayPeople(day.date);
+  if(!people.length) return;
+
+  const html = `
+    <div class="role-card">
+      <div class="role-header">
+        <span class="date-badge">${day.label} • ${day.date}</span>
+      </div>
+      <ul class="role-list">
+        ${people.map(p=>{
+          const parts = [];
+          if(p.start) parts.push(`<span><strong>Start</strong> ${p.start}</span>`);
+          if(p.break) parts.push(`<span><strong>Pauze</strong> ${p.break}</span>`);
+          if(p.switch_time) parts.push(`<span><strong>Wissel</strong> ${p.switch_time}${p.switch_to?` → ${escapeHtml(p.switch_to)}`:''}</span>`);
+          if(p.stop) parts.push(`<span><strong>Stop</strong> ${p.stop}</span>`);
+          return `
+            <li class="role-item">
+              <div class="role-name">${escapeHtml(p.name)}${p.role!=='—' ? ` — ${escapeHtml(p.role)}`:''}</div>
+              <div class="role-times">${parts.join(' ')}</div>
+            </li>
+          `;
+        }).join('')}
+      </ul>
+    </div>
+  `;
+  wrap.insertAdjacentHTML('beforeend', html);
+}
+
+function renderAllOtherDays(){
+  const wrap = document.getElementById('dayBoards');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  OTHER_DAYS.forEach(renderDayBoard);
+}
+
+// Vul de dagoverzichten wanneer de accordion openklapt
+document.getElementById('shiftOverview')?.addEventListener('toggle', e=>{
+  if(e.target.open){ renderAllOtherDays(); }
+});
+
 
 // Hergebruik parse + sort per role (zelfde logique als buildRoleIndex)
 function buildDayIndex(dateStr){
